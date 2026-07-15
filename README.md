@@ -1,6 +1,6 @@
 # AWS Production VPC Architecture with Public & Private Subnets
 
-![Architecture](images/architecture.png)
+![Architecture](images/aws-architecture.png)
 
 ## Project Overview
 
@@ -10,7 +10,6 @@ The infrastructure is designed with **high availability, scalability, and securi
 
 Application traffic enters through the Application Load Balancer and is distributed to EC2 instances running inside private subnets. The private instances do not have direct internet exposure and use NAT Gateways for outbound internet connectivity.
 
----
 
 # Features
 
@@ -24,7 +23,6 @@ Application traffic enters through the Application Load Balancer and is distribu
 - Security Groups for network access control
 - CloudWatch monitoring for infrastructure health
 
----
 
 # Architecture Overview
 
@@ -47,31 +45,42 @@ The architecture contains:
 
 ```
 
-Internet
-
-|
-
-Internet Gateway
-
-|
-
-Application Load Balancer
-
-|
-
-Target Group
-
-|
-
-EC2 Instances (Private Subnets)
-
-|
-
-NAT Gateway
-
-|
-
-Internet
+                 ┌───────────┐
+                 │ Internet  │
+                 └─────┬─────┘
+                       │
+                       ▼
+               ┌────────────────┐
+               │    Internet    │
+               │    Gateway     │
+               └───────┬────────┘
+                       │
+                       ▼
+            ┌──────────────────────┐
+            │   Application Load   │
+            │       Balancer       │
+            └──────────┬───────────┘
+                       │
+                       ▼
+                ┌────────────────┐
+                │  Target Group  │
+                └──────┬─────────┘
+                       │
+                       ▼
+           ┌─────────────────────────┐
+           │     EC2 Instances       │
+           │   (Private Subnets)     │
+           └──────────┬──────────────┘
+                       │
+                       ▼
+                ┌─────────────┐
+                │ NAT Gateway │
+                └──────┬──────┘
+                       │
+                       ▼
+                  ┌──────────┐
+                  │ Internet │
+                  └──────────┘
 
 ```
 
@@ -80,26 +89,17 @@ Internet
 ```
 
 Administrator
-
-```
-  |
-
-  |
-```
-
+      |
+      |
+      v
 Bastion Host (Public Subnet)
-
-```
-  |
-
-  |
-```
-
+      |
+      |
+      v
 Private EC2 Instances
 
 ```
 
----
 
 # AWS Services Used
 
@@ -116,7 +116,6 @@ Private EC2 Instances
 | Security Groups | Controls network traffic |
 | CloudWatch | Monitors AWS resources |
 
----
 
 # VPC Architecture
 
@@ -146,7 +145,6 @@ The VPC includes:
 
 ![Network Interfaces](images/Network%20Interfaces.png)
 
----
 
 # Multi Availability Zone Deployment
 
@@ -160,8 +158,6 @@ Each Availability Zone contains:
 
 This design reduces the impact of a single Availability Zone failure.
 
----
-
 # Public Subnets
 
 Public subnets contain internet-facing resources:
@@ -172,7 +168,6 @@ Public subnets contain internet-facing resources:
 
 These resources communicate with the internet through the Internet Gateway.
 
----
 
 # Private Subnets
 
@@ -191,7 +186,6 @@ Benefits:
 ![Private EC2 Server](images/EC2%20-%20server%20deployed%20in%20private%20subnet.png)
 
 
----
 
 # Deployment Verification
 
@@ -203,7 +197,6 @@ The following screenshot shows the server running successfully inside the privat
 
 ![Private Subnet Server Running](images/server-deployed-successfully-private-subnet.png)
 
----
 
 # EC2 Instances
 
@@ -217,7 +210,6 @@ The instances:
 
 ![EC2 Instances](images/EC2%20instances.png)
 
----
 
 # Application Load Balancer
 
@@ -245,7 +237,6 @@ Features:
 >
 > One EC2 instance appears as unhealthy because the application was not configured on that instance. This demonstrates the health check functionality of the Application Load Balancer, which removes unhealthy targets from request routing and forwards traffic only to healthy instances.
 
----
 
 # Target Groups
 
@@ -260,7 +251,6 @@ Features:
 
 ![Target Groups](images/Target%20Groups.png)
 
----
 
 # Auto Scaling Group
 
@@ -276,7 +266,6 @@ Benefits:
 
 ![Auto Scaling Group](images/AutoScaling%20Group.png)
 
----
 
 # Bastion Host
 
@@ -291,7 +280,6 @@ Purpose:
 
 ![Bastion Host](images/bastion-host.png)
 
----
 
 # NAT Gateway
 
@@ -305,7 +293,6 @@ Used for:
 
 For high availability, NAT Gateways are deployed in both Availability Zones.
 
----
 
 # Monitoring
 
@@ -320,7 +307,6 @@ Monitoring includes:
 
 ![EC2 Monitoring](images/basic%20Monitoring%20of%203%20EC2%20instances%20on%20aws.png)
 
----
 
 # Security Implementation
 
@@ -333,7 +319,6 @@ Security practices implemented:
 - NAT Gateway providing outbound internet access
 - Multi-AZ deployment for reliability
 
----
 
 # Challenges Faced
 
@@ -348,7 +333,6 @@ EC2 instances deployed in private subnets cannot be accessed directly from the i
 A Bastion Host was deployed in a public subnet to securely access private EC2 instances through SSH.
 
 
----
 
 ## Private Instance Internet Access
 
@@ -361,7 +345,6 @@ Private EC2 instances required internet access for updates and package installat
 NAT Gateways were deployed in each Availability Zone to provide outbound internet connectivity.
 
 
----
 
 ## High Availability
 
@@ -373,7 +356,6 @@ Application availability should not depend on a single Availability Zone.
 
 Resources were distributed across multiple Availability Zones using an Application Load Balancer and Auto Scaling Group.
 
----
 
 # Key Learnings
 
@@ -388,7 +370,6 @@ Through this project, I learned:
 - Configuring NAT Gateway connectivity
 - Monitoring AWS infrastructure
 
----
 
 # Future Improvements
 
@@ -401,7 +382,6 @@ Possible improvements:
 - Add CI/CD pipeline
 - Add Amazon RDS database layer
 
----
 
 # Conclusion
 
@@ -418,4 +398,3 @@ Key concepts demonstrated include:
 - NAT Gateway connectivity
 - CloudWatch monitoring
 - AWS security best practices
-```
