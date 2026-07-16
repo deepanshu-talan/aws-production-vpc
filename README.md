@@ -136,16 +136,6 @@ The VPC includes:
 ![VPC](images/VPC.png)
 
 
-## VPC Resource Mapping
-
-![VPC Resource Mapping](images/VPC%20Resource%20Mapping.png)
-
-
-## Network Interfaces
-
-![Network Interfaces](images/Network%20Interfaces.png)
-
-
 # Multi Availability Zone Deployment
 
 To improve fault tolerance, resources are deployed across two Availability Zones.
@@ -183,8 +173,9 @@ Benefits:
 
 ## EC2 Server Deployed in Private Subnet
 
-![Private EC2 Server](images/EC2%20-%20server%20deployed%20in%20private%20subnet.png)
+![Private EC2 Server - AZ 1A](images/EC2%20-%20server%20deployed%20in%20private%20subnet.png)
 
+![Private EC2 Server - AZ 1B](images/EC2%20-%20server%20deployed%20in%20private%20subnet2.png)
 
 
 # Deployment Verification
@@ -195,8 +186,9 @@ Although the EC2 instance does not have direct public access, it can serve appli
 
 The following screenshot shows the server running successfully inside the private VPC environment.
 
-![Private Subnet Server Running](images/server-deployed-successfully-private-subnet.png)
+![Private Subnet Server Running - AZ 1A](images/AZ-1a-logs-server-run.png)
 
+![Private Subnet Server Running - AZ 1B](images/AZ-1b-logs-server-run.png)
 
 # EC2 Instances
 
@@ -208,7 +200,9 @@ The instances:
 - Are managed by Auto Scaling Group
 - Remain protected from direct public access
 
-![EC2 Instances](images/EC2%20instances.png)
+![EC2 Instance - AZ 1A](images/instance-private-1a.png)
+
+![EC2 Instance - AZ 1B](images/instance-private-1b.png)
 
 
 # Application Load Balancer
@@ -227,16 +221,7 @@ Features:
 
 ![Load Balancer](images/Load%20Balancer.png)
 
-
-## Load Balancer Resource Mapping
-
-![Resource Map Load Balancer](images/ResourceMapLoadBalancer.png)
-
-
-> **Note**
->
-> One EC2 instance appears as unhealthy because the application was not configured on that instance. This demonstrates the health check functionality of the Application Load Balancer, which removes unhealthy targets from request routing and forwards traffic only to healthy instances.
-
+*Note: One of the targets is intentionally shown as unhealthy because no application was deployed on that EC2 instance. This demonstrates the Application Load Balancer's health check behavior, where unhealthy targets are automatically excluded from request routing until they become healthy.*
 
 # Target Groups
 
@@ -249,7 +234,12 @@ Features:
 - Routes traffic only to healthy targets
 
 
-![Target Groups](images/Target%20Groups.png)
+![Target Groups - One Unhealthy Target](images/Target%20Groups.png)
+
+> [!NOTE]
+> One target is intentionally marked as **unhealthy** because the application was not deployed on that EC2 instance. This demonstrates how the Application Load Balancer detects unhealthy targets and routes traffic only to healthy instances.
+
+![Target Groups - All Targets Healthy](images/Target-Groups-both-working.png)
 
 
 # Auto Scaling Group
@@ -293,6 +283,8 @@ Used for:
 
 For high availability, NAT Gateways are deployed in both Availability Zones.
 
+![NAT GATEWAY](images/NAT-Gateway.png)
+
 
 # Monitoring
 
@@ -305,7 +297,9 @@ Monitoring includes:
 - Resource usage metrics
 
 
-![EC2 Monitoring](images/basic%20Monitoring%20of%203%20EC2%20instances%20on%20aws.png)
+![EC2 Monitoring](images/ec2-monitoring-by-cloudwatch.png)
+> 
+**Note:** The following CloudWatch dashboard displays monitoring metrics for all three EC2 instances deployed in the Auto Scaling environment.
 
 
 # Security Implementation
