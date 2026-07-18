@@ -40,6 +40,58 @@ The architecture contains:
 - EC2 instances in private subnets
 - Bastion Host
 
+## How to Recreate
+
+Follow these steps to deploy this infrastructure in your own AWS account.
+
+### Prerequisites
+*   **AWS Account** with administrative permissions.
+*   **EC2 Key Pair** created in your target region (e.g., `ap-south-1`).
+*   **AWS CLI** configured (optional, for faster execution).
+
+### Deployment Steps
+
+1.  **Create VPC & Subnets**
+    *   Create a new **VPC** (e.g., `10.0.0.0/16`).
+    *   Create **2 Public Subnets** and **2 Private Subnets** across two different Availability Zones (e.g., `ap-south-1a`, `ap-south-1b`).
+
+2.  **Configure Internet Access**
+    *   Create an **Internet Gateway (IGW)** and attach it to the VPC.
+    *   Create a **NAT Gateway** in each Public Subnet (requires an Elastic IP).
+
+3.  **Setup Route Tables**
+    *   **Public Route Table**: Associate with Public Subnets; add route `0.0.0.0/0` → **Internet Gateway**.
+    *   **Private Route Table**: Associate with Private Subnets; add route `0.0.0.0/0` → **NAT Gateway**.
+
+4.  **Launch Bastion Host**
+    *   Launch an **EC2 instance** (t2.micro) in a **Public Subnet**.
+    *   Assign a Public IP and attach a Security Group allowing **SSH (22)** from your IP address.
+
+5.  **Configure Security Groups**
+    *   **ALB Security Group**: Allow **HTTP (80)** from `0.0.0.0/0`.
+    *   **Private EC2 Security Group**:
+        *   Allow **SSH (22)** *only* from the **Bastion Security Group ID**.
+        *   Allow **Custom TCP (e.g., 8000)** *only* from the **ALB Security Group ID**.
+
+6.  **Deploy Application & Load Balancer**
+    *   Create a **Launch Template** for EC2 with your Flask app user-data script.
+    *   Create an **Application Load Balancer (ALB)** in the Public Subnets.
+    *   Create a **Target Group** and register the private EC2 instances.
+    *   Configure an **Auto Scaling Group** using the Launch Template and Target Group.
+
+7.  **Enable Monitoring**
+    *   Enable **CloudWatch Detailed Monitoring** on the Auto Scaling Group.
+    *   Create a **CloudWatch Alarm** to trigger if CPU > 70%.
+
+### ✅ Validation
+*   Access the **ALB DNS URL** in a browser; the app should load.
+*   SSH into the **Bastion Host**, then SSH into a **Private Instance** using its private IP.
+*   Terminate a private EC2 instance manually; verify the **Auto Scaling Group** launches a replacement within 2–3 minutes.
+*   Check **CloudWatch** to ensure metrics are flowing from private instances.
+
+> ⚠️ **Cost Warning**: NAT Gateways and ALBs incur hourly charges. **Delete all resources** immediately after testing to avoid unexpected costs.
+
+
 
 ## Request Flow
 
