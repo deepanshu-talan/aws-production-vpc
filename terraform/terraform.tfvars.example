@@ -1,0 +1,57 @@
+project_name = "aws-vpc-project"
+aws_region   = "ap-south-1"
+
+# ---------------------------------------------------------------------------
+# Network
+# ---------------------------------------------------------------------------
+
+vpc_cidr = "10.0.0.0/16"
+
+public_subnets = {
+  "ap-south-1a" = "10.0.1.0/24"
+  "ap-south-1b" = "10.0.2.0/24"
+}
+
+private_subnets = {
+  "ap-south-1a" = "10.0.11.0/24"
+  "ap-south-1b" = "10.0.12.0/24"
+}
+
+# false = one NAT Gateway per AZ (high availability, matches original architecture)
+# true  = single NAT Gateway (lower cost)
+single_nat_gateway = false
+
+# ---------------------------------------------------------------------------
+# Compute
+# ---------------------------------------------------------------------------
+
+instance_type = "t3.micro"
+app_port      = 8000
+
+# Leave commented to auto-use the latest Ubuntu 24.04 LTS AMI
+# ami_id = "ami-0abcdef1234567890"
+
+# ---------------------------------------------------------------------------
+# Auto Scaling
+# ---------------------------------------------------------------------------
+
+asg_desired_capacity = 2
+asg_min_size         = 2
+asg_max_size         = 4
+
+# ---------------------------------------------------------------------------
+# Security
+# ---------------------------------------------------------------------------
+
+key_pair_name = "aws_login"
+
+# Restrict to your IP for security. Example: ["203.0.113.10/32"]
+allowed_ssh_cidr = ["0.0.0.0/0"]
+
+enable_bastion = true
+
+# ---------------------------------------------------------------------------
+# Monitoring
+# ---------------------------------------------------------------------------
+
+cpu_alarm_threshold = 70
