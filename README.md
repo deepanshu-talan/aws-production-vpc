@@ -1,6 +1,6 @@
 # AWS Secure VPC Infrastructure using Terraform
 
-![Architecture](images/aws-architecture.png)
+![Architecture](docs/images/aws-architecture.png)
 
 ## Project Overview
 
@@ -107,37 +107,37 @@ Engineer → Bastion Host (public subnet) → Private EC2 instances
 
 ### VPC
 
-![VPC](images/VPC.png)
+![VPC](docs/images/VPC.png)
 
 ### Flask App deployed on EC2 Instances in Private Subnets
 
-![Private EC2 Server - AZ 1A](images/EC2%20-%20server%20deployed%20in%20private%20subnet.png)
+![Private EC2 Server - AZ 1A](docs/images/EC2%20-%20server%20deployed%20in%20private%20subnet.png)
 
-![Private EC2 Server - AZ 1B](images/EC2%20-%20server%20deployed%20in%20private%20subnet2.png)
+![Private EC2 Server - AZ 1B](docs/images/EC2%20-%20server%20deployed%20in%20private%20subnet2.png)
 
 ### Application Load Balancer
 
-![Load Balancer](images/Load%20Balancer.png)
+![Load Balancer](docs/images/Load%20Balancer.png)
 
 ### Target Groups
 
-![Target Groups](images/Target-Groups-both-working.png)
+![Target Groups](docs/images/Target-Groups-both-working.png)
 
 ### Auto Scaling Group
 
-![Auto Scaling Group](images/AutoScaling%20Group.png)
+![Auto Scaling Group](docs/images/AutoScaling%20Group.png)
 
 ### Bastion Host
 
-![Bastion Host](images/bastion-host.png)
+![Bastion Host](docs/images/bastion-host.png)
 
 ### NAT Gateway
 
-![NAT Gateway](images/NAT-Gateway.png)
+![NAT Gateway](docs/images/NAT-Gateway.png)
 
 ### CloudWatch Monitoring
 
-![EC2 Monitoring](images/ec2-monitoring-by-cloudwatch.png)
+![EC2 Monitoring](docs/images/ec2-monitoring-by-cloudwatch.png)
 
 ---
 
