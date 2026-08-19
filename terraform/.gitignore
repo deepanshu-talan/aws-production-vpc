@@ -1,16 +1,15 @@
 # ---------------------------------------------------------------------------
 # Terraform
 # ---------------------------------------------------------------------------
-terraform/.terraform/
+**/.terraform/
 *.tfstate
 *.tfstate.*
 crash.log
 crash.*.log
 
 # Variable files — copy terraform.tfvars.example to create your own
-terraform/*.tfvars
-!terraform/terraform.tfvars.example
-backend.hcl
+**/*.tfvars
+!**/terraform.tfvars.example
 
 # ---------------------------------------------------------------------------
 # SSH Keys — never commit

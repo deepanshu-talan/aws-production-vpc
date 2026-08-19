@@ -1,7 +1,7 @@
 resource "aws_security_group" "alb" {
   name        = "${var.project_name}-alb-sg"
   description = "Allow HTTP traffic to the Application Load Balancer"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "${var.project_name}-alb-sg"
@@ -24,13 +24,10 @@ resource "aws_vpc_security_group_egress_rule" "alb_all" {
   cidr_ipv4         = "0.0.0.0/0"
 }
 
-# Bastion Host Security Group
-# SSH access restricted to the IPs in var.allowed_ssh_cidr.
-
 resource "aws_security_group" "bastion" {
   name        = "${var.project_name}-bastion-sg"
   description = "Allow SSH access to the Bastion Host"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "${var.project_name}-bastion-sg"
@@ -55,14 +52,10 @@ resource "aws_vpc_security_group_egress_rule" "bastion_all" {
   cidr_ipv4         = "0.0.0.0/0"
 }
 
-# Private EC2 Security Group
-# Uses Security Group references so private instances are only reachable
-# from the ALB (app traffic) and Bastion (SSH) — never directly from the internet.
-
 resource "aws_security_group" "private_ec2" {
   name        = "${var.project_name}-private-ec2-sg"
   description = "Allow traffic from ALB and Bastion only"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "${var.project_name}-private-ec2-sg"

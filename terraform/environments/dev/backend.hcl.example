@@ -1,0 +1,6 @@
+# terraform init -backend-config=backend.hcl
+# This configures remote backend on already created S3 bucket.
+
+bucket = "<YOUR_BUCKET_NAME>"
+key    = "example/terraform.tfstate"
+region = "<YOUR_REGION>"

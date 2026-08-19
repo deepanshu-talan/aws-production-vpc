@@ -1,8 +1,3 @@
-# IAM Role for EC2
-# Grants EC2 instances permission to:
-#   - Use SSM Session Manager (alternative to SSH in production)
-#   - Publish metrics and logs via the CloudWatch Agent
-
 data "aws_iam_policy_document" "ec2_assume_role" {
   statement {
     effect = "Allow"

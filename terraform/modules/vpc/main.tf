@@ -43,10 +43,6 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# NAT Gateways
-# Default: one NAT Gateway per AZ (high availability).
-# Set single_nat_gateway = true for a single NAT to reduce cost.
-
 locals {
   nat_azs       = var.single_nat_gateway ? { (keys(var.public_subnets)[0]) = values(var.public_subnets)[0] } : var.public_subnets
   single_nat_az = keys(var.public_subnets)[0]
@@ -97,7 +93,6 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# One private route table per AZ — each routes through the AZ-local NAT Gateway.
 resource "aws_route_table" "private" {
   for_each = var.private_subnets
 
