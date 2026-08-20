@@ -10,6 +10,17 @@ The architecture follows a production-style design where application traffic ent
 
 ---
 
+## Project Evolution
+
+This project represents the foundational AWS infrastructure.
+
+The upgraded three-tier implementation is available in  
+[aws-3tier-infra](https://github.com/deepanshu-talan/aws-3tier-infra).
+
+
+
+---
+
 ## Key Features
 
 - Production-style VPC architecture with public and private subnet separation
